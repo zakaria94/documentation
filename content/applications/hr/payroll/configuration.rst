@@ -67,17 +67,9 @@ form:
 - :guilabel:`Code`: This code appears with the work entry type on timesheets and payslips. Since the
   code is used in conjunction with the *Accounting* application, it is advised to check with the
   accounting department for a code to use.
-- :guilabel:`Sequence`: The sequence determines the order that the work entry is computed in the
-  payslip list.
-- Check boxes: If any of the items in the list applies to the work entry, check off the box by
-  clicking it. If :guilabel:`Time Off` is checked off, a :guilabel:`Time Off Type` field appears.
-  This field has a drop-down menu to select the specific type of time off, or a new type of time off
-  can be entered.
-
-.. image:: configuration/new-work-entry.png
-   :align: center
-   :alt: New work entry type form.
-
+- :guilabel:`DMFA Code`: This code is used to identify DMFA entries on a corresponding DMFA report,
+  and is for Belgian-based companies only.
+- :guilabel:`Color`: Select a color for the particular work entry type.
 - :guilabel:`Rounding`: The rounding method determines how timesheet entries are displayed on the
   payslip.
 
@@ -90,6 +82,17 @@ form:
    time of 5.5 hours on a timesheet, and :guilabel:`Rounding` is set to :guilabel:`No Rounding`, the
    entry remains 5.5 hours. If :guilabel:`Rounding` is set to :guilabel:`Half Day`, the entry is
    changed to 4 hours. If it is set to :guilabel:`Day`, it is changed to 8 hours.
+
+- :guilabel:`Unpaid in Structures Types`: If the work entry is for unpaid work, specify which pay
+  structure the work entry can apply to from the drop-down menu.
+- Check boxes: If any of the items in the list applies to the work entry, check off the box by
+  clicking it. If :guilabel:`Time Off` is checked off, a :guilabel:`Time Off Type` field appears.
+  This field has a drop-down menu to select the specific type of time off, or a new type of time off
+  can be entered.
+
+.. image:: configuration/new-work-entry.png
+   :align: center
+   :alt: New work entry type form.
 
 Working times
 -------------
