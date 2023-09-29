@@ -184,7 +184,6 @@ function.
    The `t-esc` directive can still be used in Owl templates. It is slightly faster than `t-out`.
 
 .. image:: 01_owl_components/markup.png
-   :scale: 80%
    :align: center
 
 5. Props validation
@@ -228,7 +227,6 @@ be called whenever the `Counter` component is incremented.
 #. Give that method as a prop to two (or more!) sub `Counter` components.
 
 .. image:: 01_owl_components/sum_counter.png
-   :scale: 90%
    :align: center
 
 .. important::
@@ -519,7 +517,6 @@ Let us modify the `Card` component to use slots:
 #. (bonus) Add prop validation
 
 .. image:: 01_owl_components/generic_card.png
-   :scale: 90%
    :align: center
 
 .. seealso::
