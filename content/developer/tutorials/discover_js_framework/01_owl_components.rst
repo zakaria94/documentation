@@ -71,6 +71,9 @@ using the QWeb language:
 1. Displaying a counter
 =======================
 
+.. image:: 01_owl_components/counter.png
+   :align: center
+
 As a first exercise, let us modify the `Playground` component located in
 :file:`awesome_owl/static/src/` to turn it into a counter. To see the result, you can go to the
 `/awesome_owl` route with your browser.
@@ -86,10 +89,6 @@ As a first exercise, let us modify the `Playground` component located in
 #. Add a button in the template and specify a `t-on-click
    <{OWL_PATH}/doc/reference/event_handling.md#event-handling>`_ attribute in the button to
    trigger the `increment` method whenever the button is clicked.
-
-.. image:: 01_owl_components/counter.png
-   :scale: 70%
-   :align: center
 
 .. tip::
    The Odoo JavaScript files downloaded by the browser are minified. For debugging purpose, it's
@@ -114,7 +113,6 @@ see how to create a `sub-component <{OWL_PATH}/doc/reference/component.md#sub-co
 #. Add two counters in your playground.
 
 .. image:: 01_owl_components/double_counter.png
-   :scale: 70%
    :align: center
 
 .. tip::
@@ -160,7 +158,6 @@ The above example should produce some html using bootstrap that look like this:
 #. Import it in `Playground` and display a few cards in its template
 
 .. image:: 01_owl_components/simple_card.png
-   :scale: 90%
    :align: center
 
 4. Using `markup` to display html
