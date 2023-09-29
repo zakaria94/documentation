@@ -46,7 +46,7 @@ and a main content zone just below. This is done using the `Layout component
 
 #. Update the `AwesomeDashboard` component located in :file:`awesome_tshirt/static/src/` to use the
    `Layout` component. You can use
-   :code:`{controlPanel: { "top-right": false, "bottom-right": false } }` for the `display` props of
+   :code:`{controlPanel: {} }` for the `display` props of
    the `Layout` component.
 #. Add a `className` prop to `Layout`: `className="'o_dashboard h-100'"`
 #. Add a `dashboard.scss` file in which you set the background-color of `.o_dashboard` to gray (or your
