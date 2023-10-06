@@ -31,6 +31,12 @@ To get started, we want to display a counter in the systray.
 
 And voila, we have a completely working clicker game!
 
+.. seealso::
+
+   - :ref:`Documentation on the systray registry <frontend/registries/systray>`
+   - `Example: adding a systray item to the registry
+     <https://github.com/odoo/odoo/blob/c4fb9c92d7826ddbc183d38b867ca4446b2fb709/addons/web/static/src/webclient/user_menu/user_menu.js#L41-L42>`_
+
 2. Count external clicks
 ========================
 
@@ -42,7 +48,14 @@ the intentional clicks on the main counter should still count more.
 #. Each of these clicks should increase the counter value by 1.
 #. Modify the code so that each click on the counter increased the value by 10
 
-Make sure that a click on the counter does not increase the value by 11!
+Make sure that a click on the counter does not increase the value by 11! Also, additional challenge: 
+make sure the external listener capture the events, so we don't miss any clicks.
+
+.. seealso::
+
+   - `Owl documentation on useExternalListener <https://github.com/odoo/owl/blob/master/doc/reference/hooks.md#useexternallistener>`_
+   - `MDN page on event capture <https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_capture>`_
+
 
 3. Create a client action
 =========================
