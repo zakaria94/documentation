@@ -66,6 +66,8 @@ result.
    - `Example: use of Layout in kanban view
      <{GITHUB_PATH}/addons/web/static/src/views/kanban/kanban_controller.xml>`_
 
+.. _tutorials/discover_js_framework/services:
+
 Theory: Services
 ================
 

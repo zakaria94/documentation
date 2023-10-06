@@ -98,15 +98,52 @@ location of our state to make it available for all our components. This is a per
    the systray item to remove its own local state and use it. Also, you can remove the `+10 clicks` button.
 #. Display the state in the client action, and add a `+10` clicks button in it.
 
-5. Humanize the displayed value
+.. seealso::
+
+   - :ref:`Short explanation on services <tutorials/discover_js_framework/services>`
+
+5. Use a custom hook
+====================
+
+Right now, every part of the code that will need to use our clicker service will have to import `useService` and
+`useState`. Since it is quite common, let us use a custom hook. It is also useful to put more emphasis on the
+`clicker` part, and less emphasis on the `service` part.
+
+#. Export a `useClicker` hook
+#. Update all current uses of the clicker service to the new hook:
+
+   .. code-block:: js
+
+      this.clicker = useClicker();
+
+
+6. Humanize the displayed value
 ===============================
 
-We will in the future display large numbers, so let us get ready for that. There is a `humanize` function that
+We will in the future display large numbers, so let us get ready for that. There is a `humanNumber` function that
 format numbers in a easier to comprehend way: for example, `1234` could be formatted as `1.2k`
 
 #. Use it to display our counters (both in the systray item and the client action)
-#. Wrap the value in a span element with a tooltip that display the exact value
-#. Factorize both of these use in a `ClickValue` component
+#. Create a `ClickValue` component that display the value
+
+Note that Owl allows component that contains just text nodes!
+
+.. seealso::
+
+   - `definition of humanNumber function <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/core/utils/numbers.js#L119>`_
+
+7. Add a tooltip in `ClickValue` component
+==========================================
+
+With the `humanNumber` function, we actually lost some precision on our interface. Let us display the real number
+as a tooltip.
+
+#. Tooltip needs an html element. Change the `ClickValue` to wrap the value in a `<span/>` element
+#. Add a dynamic `data-tooltip` attribute to display the exact value
+
+.. seealso::
+   
+   - `Documentation in the tooltip service <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/core/tooltip/tooltip_service.js#L17>`_
 
 6. Buy ClickBots
 ==================
