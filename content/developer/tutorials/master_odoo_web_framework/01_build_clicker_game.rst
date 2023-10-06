@@ -64,10 +64,14 @@ Currently, the current user interface is quite small: it is just a systray item.
 more room to display more of our game. To do that, let us create a client action. A client action
 is a main action, managed by the web client, that displays a component.
 
-#. Create a `clicker_client_action.js` (and `xml`) file, with a hello world component
-#. Register that client action in the action registry under the name `clicker_action`
+#. Create a `client_action.js` (and `xml`) file, with a hello world component
+#. Register that client action in the action registry under the name `awesome_clicker.client_action`
 #. Add a button on the systray item with the text `Open`. Clicking on it should open the
-   client action `clicker_action` (use the action service to do that)
+   client action `awesome_clicker.client_action` (use the action service to do that)
+
+.. seealso::
+
+   - :ref:`How to create a client action <howtos/javascript_client_action>`
 
 4. Move the state to a service
 ==============================
