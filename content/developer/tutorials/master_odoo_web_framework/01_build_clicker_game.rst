@@ -171,40 +171,60 @@ simpler, let us split our business logic out of our service and into a class
    the service into the model
 #. Rewrite the clicker service to instantiate and export the clicker model class.
 
-7. Notify when a milestone is reached
-=====================================
+.. seealso::
+
+   - `Example of subclassing Reactive <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/model/relational_model/datapoint.js#L32>`_
+
+10. Notify when a milestone is reached
+======================================
 
 There is not much feedback that something changed when we reached 1k clicks. Let us use the `effect` service
-to communicate that information clearly.
+to communicate that information clearly. The problem is that our click model does not have access to services.
+Also, we want to keep as much as possible the UI concern out of the model. So, we can explore a new strategy
+for communication: event buses.
 
-#. When we reach 1000 clicks, use the `effect` service to display a rainbow man.
+#. Update the clicker model to instantiate a bus, and to trigger a `MILESTONE_1k` event when we reach 1000 clicks
+   for the first time
+#. Change the clicker service to listen to the same event on the model bus
+#. When that happens, use the `effect` service to display a rainbow man.
 #. Add some text to explain that the user can now buy clickbots.
 
-8. Add BigBots
-==============
+.. seealso::
+
+   - `Owl documentation on event bus <https://github.com/odoo/owl/blob/master/doc/reference/utils.md#eventbus>`_
+   - :ref:`Documentation on effect service <frontend/services/effect>`
+
+11. Add BigBots
+===============
 
 Clearly, we need a way to provide the player with more choices. Let us add a new type of clickbot: `BigBots`,
 which are just more powerful: they provide with 100 clicks each 10s, but they cost 5000 clicks
 
-#. increment `unlockLevel` when it gets to 5k (so it should be 2)
+#. increment `level` when it gets to 5k (so it should be 2)
 #. Update the state to keep track of bigbots
-#. bigbots should be available at `unlockLevel >=2`
-#. Add the corresponding information to the client action
+#. bigbots should be available at `level >=2`
+#. Display the corresponding information in the client action
 
-9. Add a new type of resource: power
-====================================
+.. tip::
+
+   If you need to use `<` or `>` in a template as a javascript expression, be careful since it might class with
+   the xml parser. To solve that, you can use one of the special aliases: `gt, gte, lt` or `lte`. See the
+   `Owl documentation page on template expressions <https://github.com/odoo/owl/blob/master/doc/reference/templates.md#expression-evaluation>`_.
+
+12. Add a new type of resource: power
+=====================================
 
 Now, to add another scaling point, let us add a new type of resource: a power multiplier. This is a number
-that can be increased at `unlockLevel >= 3`, and multiplies the action of the bots (so, instead of providing
+that can be increased at `level >= 3`, and multiplies the action of the bots (so, instead of providing
 one click, clickbots now provide us with `multiplier` clicks).
 
-#. increment `unlockLevel` when it gets to 100k (so it should be 3)
+#. increment `level` when it gets to 100k (so it should be 3)
 #. update the state to keep track of the power (initial value is 1)
 #. change bots to use that number as a multiplier
 #. Update the user interface to display and let the user purchase a new power level (costs: 50k)
 
 
-10. Define some random rewards
+13. Define some random rewards
 ==============================
 
 We want the user to obtain sometimes bonuses, to reward using Odoo. 
@@ -248,9 +268,9 @@ We want the user to obtain sometimes bonuses, to reward using Odoo.
 
 #. Define a function `getReward` that will select a random reward from the list of rewards that matches
    the current unlock level.
-   
+#. Extract the code that choose randomly in an array in a function `choose` that you can move to another `utils.js` file   
 
-11. Provide a reward when opening a form view
+14. Provide a reward when opening a form view
 =============================================
 
 #. Patch the form controller. Each time a form controller is created, it should randomly decides (1% chance)
@@ -259,7 +279,7 @@ We want the user to obtain sometimes bonuses, to reward using Odoo.
 #. That method should choose a reward, send a sticky notification, with a button `Collect` that will
    then apply the reward, and finally, it should open the `clicker` client action
 
-12. Only Open the client action if necessary
+15. Only Open the client action if necessary
 ============================================
 
 Now, the previous exercise has a small flaw: imagine that the player opens a form view, get a reward notification,
@@ -274,14 +294,14 @@ action controller is: `getCurrentController`.
    it if it is not true.
 
 
-11. Add commands in command palette 
+16. Add commands in command palette 
 ===================================
 
 #. Add a command `Open Clicker Game` to the command palette
 #. Add another command: `Buy 1 click bot`
 
 
-12. Add yet another resource: trees 
+17. Add yet another resource: trees 
 ===================================
 
 It is now time to introduce a completely new type of resources. Here is one that should not be too controversial: trees.
@@ -293,7 +313,7 @@ fruits (either pears or cherries).
 #. Define a new unlock level at `clicks >= 1 000 000`
 #. Update the client user interface to display the number of trees and fruits, and also, to buy trees 
 
-13. Use a dropdown menu for the systray item
+18. Use a dropdown menu for the systray item
 ============================================
 
 Our game starts to become interesting. But for now, the systray only displays the total number of clicks. We
@@ -306,7 +326,7 @@ access to some commands and some more information. Let us use a dropdown menu!
    and fruits
 #. Also, a few dropdown items with some commands: open the clicker game, buy a clickbot, ...
 
-14. Use a Notebook component 
+19. Use a Notebook component 
 ============================
 
 We now keep track of a lot more information. Let us improve our client interface by organizing the information
@@ -316,7 +336,7 @@ and features in various tabs, with the `Notebook` component:
 #. All `click` content should be displayed in one tab,
 #. All `tree/fruits` content should be displayed in another tab
 
-15. Persist the game state
+20. Persist the game state
 ==========================
 
 You certainly noticed a big flaw in our game: it is transient. The game state is lost each time the user closes the
@@ -327,7 +347,7 @@ browser tab. Let us fix that. We will use the local storage to persist the state
 #. When the `clicker` service is started, it should load the state from the local storage (if any), or initialize itself
    otherwise
 
-16. Introduce state migration system 
+21. Introduce state migration system 
 ====================================
 
 Once you persist state somewhere, a new problem arises: what happens when you update your code, so the shape of the state
@@ -342,7 +362,7 @@ a system to automatically update the states if it is not up to date.
 #. Whenever the code loads the state from the local storage, it should check the version number. If the state is not
    uptodate, it should apply all necessary migrations
 
-17. Add another type of trees
+22. Add another type of trees
 =============================
 
 To test our migration system, let us add a new type of trees: peaches.
