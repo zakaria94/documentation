@@ -145,20 +145,31 @@ as a tooltip.
    
    - `Documentation in the tooltip service <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/core/tooltip/tooltip_service.js#L17>`_
 
-6. Buy ClickBots
+8. Buy ClickBots
 ==================
 
 Let us make our game even more interesting: once a player get to 1000 clicks for the first time, the game 
 should unlock a new feature: the player can buy robots for 1000 clicks. These robots will generate 10 clicks
 every 10 seconds.
 
-#. Add a `unlockLevel` number to our state. This is a number that will be incremented at some milestones, and
+#. Add a `level` number to our state. This is a number that will be incremented at some milestones, and
    open new features
 #. Add a `clickBots` number to our state. It represents the number of robots that have been purchased.
-#. Modify the client action to display the number of click bots (only if `unlockLevel >= 1`), with a `Buy`
+#. Modify the client action to display the number of click bots (only if `level >= 1`), with a `Buy`
    button that is enabled if `clicks >= 1000`. The `Buy` button should increment the number of clickbots by 1.
-
 #. Set a 10s interval in the service that will increment the number of clicks by `10*clickBots`.
+#. Make sure the Buy button is disabled if the player does not have enough clicks.
+
+9. Refactor to a class model
+============================
+
+The current code is written in a somewhat functional style. But to do so, we have to export the state and all its
+update functions in our clicker object.  As this project grows, this may become more and more complex. To make it
+simpler, let us split our business logic out of our service and into a class
+
+#. Create a `clicker_model` file that exports a reactive class. Move all the state and update functions from
+   the service into the model
+#. Rewrite the clicker service to instantiate and export the clicker model class.
 
 7. Notify when a milestone is reached
 =====================================
