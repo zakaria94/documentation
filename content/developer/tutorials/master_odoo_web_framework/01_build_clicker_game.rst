@@ -279,6 +279,12 @@ We want the user to obtain sometimes bonuses, to reward using Odoo.
 #. That method should choose a reward, send a sticky notification, with a button `Collect` that will
    then apply the reward, and finally, it should open the `clicker` client action
 
+.. seealso::
+
+   - :ref:`Documentation on patching a class <frontend/patching_class>`
+   - `Definition of patch function <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/core/utils/patch.js#L71>`_
+   - `Example of patching a class <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/pos_mercury/static/src/app/screens/receipt_screen/receipt_screen.js#L6>`_
+
 15. Only Open the client action if necessary
 ============================================
 
@@ -300,6 +306,9 @@ action controller is: `getCurrentController`.
 #. Add a command `Open Clicker Game` to the command palette
 #. Add another command: `Buy 1 click bot`
 
+.. seealso::
+
+   - `Example of use of command provider registry <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/src/core/debug/debug_providers.js#L10>`_
 
 17. Add yet another resource: trees 
 ===================================
@@ -335,6 +344,10 @@ and features in various tabs, with the `Notebook` component:
 #. Use the `Notebook` component
 #. All `click` content should be displayed in one tab,
 #. All `tree/fruits` content should be displayed in another tab
+
+.. seealso::
+
+   - `Tests of Notebook component <https://github.com/odoo/odoo/blob/c638913df191dfcc5547f90b8b899e7738c386f1/addons/web/static/tests/core/notebook_tests.js#L27>`_
 
 20. Persist the game state
 ==========================
