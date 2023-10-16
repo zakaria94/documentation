@@ -90,22 +90,18 @@ inherits from a generic `XMLParser` class.
 
    .. code-block:: js
 
-      import { XMLParser } from "@web/core/utils/xml";
-
-      export class GraphArchParser extends XMLParser {
-          parse(arch, fields) {
-             const result = {};
-             this.visitXML(arch, (node) => {
-                 ...
-              });
-             return result;
+      export class MyCustomArchParser {
+          parse(xmlDoc) {
+             const myAttribute = xmlDoc.getAttribute("my_attribute")
+             return {
+                 myAttribute,
+             }
           }
       }
 
 .. exercise::
 
-   #. Create the `ArchParser` class in its own file. It can inherit from `XMLParser` in
-      `@web/core/utils/xml`.
+   #. Create the `ArchParser` class in its own file.
    #. Use it to read the `image_field` information.
    #. Update the `gallery` view code to add it to the props received by the controller.
 
@@ -121,24 +117,62 @@ inherits from a generic `XMLParser` class.
 4. Load some data
 =================
 
-Let us now get some real data.
+Let us now get some real data from the server. For that we must use `webSearchRead` from the orm
+service.
+
+.. example::
+
+   Here is an example of a `webSearchRead` to get the records from a model:
+
+   .. code-block:: js
+
+      const { length, records } = this.orm.webSearchRead(this.resModel, domain, {
+         specification: {
+              [this.fieldToFetch]: {},
+              [this.secondFieldToFetch]: {},
+          },
+          context: {
+              bin_size: true,
+          }
+      })
 
 .. exercise::
 
    #. Add a :code:`loadImages(domain) {...}` method to the `GalleryController`. It should perform a
       `webSearchRead` call from the orm service to fetch records corresponding to the domain, and
       use `imageField` received in props.
+   #. If you didn't include `bin_size` in the context of the call, you will receive the image field
+      encoded in base64. Make sure to put `bin_size` in the context to receive the size of the image
+      field. We will display the image later.
    #. Modify the `setup` code to call that method in the `onWillStart` and `onWillUpdateProps`
       hooks.
-   #. Modify the template to display the data inside the default slot of the `Layout` component.
+   #. Modify the template to display the id and the size of each image inside the default slot of
+      the `Layout` component.
 
    .. note::
-      The loading data code will be moved into a proper model in the next exercise.
+      The loading data code will be moved into a proper model in a next exercise.
 
    .. image:: 03_create_gallery_view/gallery_data.png
       :align: center
 
-5. Reorganize code
+5. Solve the concurrency problem
+================================
+
+For now, our code is not concurrency proof. If one changes the domain twice, it will trigger the
+`loadImages(domain)` twice. We have thus two requests that can arrive at different time depending
+on different factors. Receiving the response for the first request after receiving the response
+for the second request will lead to an inconsistent state.
+
+The `KeepLast` primitive from Odoo solves this problem, it manages a list of tasks, and only
+keeps the last task active.
+
+.. exercise::
+
+   #. Import `KeepLast` from :file:`@web/core/utils/concurrency`.
+   #. Instanciate a `KeepLast` object in the model.
+   #. Add the `webSearchRead` call in the `KeepLast` so that only the last call is resolved.
+
+6. Reorganize code
 ==================
 
 Real views are a little bit more organized. This may be overkill in this example, but it is intended
@@ -148,15 +182,68 @@ to learn how to structure code in Odoo. Also, this will scale better with changi
 
    #. Move all the model code in its own `GalleryModel` class.
    #. Move all the rendering code in a `GalleryRenderer` component.
-   #. Adapt the `GalleryController` and `gallery_view` to make it work.
+   #. Import `GalleryModel` and `GalleryRenderer` in `GalleryController` to make it work.
 
-6. Display images
+7. Make the view extensible
+===========================
+
+To extends the view, one could import the gallery view object to modify it to their taste. The
+problem is that for the moment, it is not possible to define a custom model or renderer because it
+is hardcoded in the controller.
+
+.. exercise::
+
+   #. Import `GalleryModel` and `GalleryRenderer` in the gallery view file.
+   #. Add a `Model` and `Renderer` key to the gallery view object and assign them to `GalleryModel`
+      and `GalleryRenderer`. Pass `Model` and `Renderer` as props to the controller.
+   #. Remove the hardcoded import in the controller and get them from the props.
+
+.. example::
+
+   This is how someone could now extend the gallery view by modifying the renderer:
+
+   .. code-block:: js
+
+      /** @odoo-module */
+
+      import { registry } from '@web/core/registry';
+      import { galleryView } from '@awesome_gallery/gallery_view';
+      import { GalleryRenderer } from '@awesome_gallery/gallery_renderer';
+
+      export class MyExtendedGalleryRenderer extends GalleryRenderer {
+         static template = "my_module.MyExtendedGalleryRenderer";
+         setup() {
+            super.setup();
+            console.log("my gallery renderer extension");
+         }
+      }
+
+      registry.category("views").add("my_gallery", {
+         ...galleryView,
+         Renderer: MyExtendedGalleryRenderer,
+      });
+
+1. Display images
 =================
 
 .. exercise::
 
    Update the renderer to display images in a nice way, if the field is set. If `image_field` is
    empty, display an empty box instead.
+
+   .. tip::
+
+         There is a controller that allows to retrieve an image from a record. You can use this
+         snippet to construct the link:
+
+         .. code-block:: js
+
+            import { url } from "@web/core/utils/urls";
+            const url = url("/web/image", {
+               model: resModel,
+               id: image_id,
+               field: imageField,
+            });
 
    .. image:: 03_create_gallery_view/tshirt_images.png
       :align: center
@@ -270,3 +357,17 @@ Let us add some validation! In Odoo, XML documents can be described with an RN f
 
 .. seealso::
    `Example: The RNG file of the graph view <{GITHUB_PATH}/addons/base/rng/graph_view.rng>`_
+
+11. Uploading an image
+======================
+
+Our gallery view does not allow users to upload images. Let us implement that.
+
+.. exercise::
+
+   #. Add a button on each image by using the `FileUploader` component.
+   #. The `FileUploader` component accepts the `onUploaded` props, which is called when the user
+      uploads an image. Make sure to call `webSave` from the orm service to upload the new image.
+   #. You maybe noticed that the image is uploaded but it is not re-rendered by the browser.
+      This is because the image link did not change so the browser do not re-fetch them. Include
+      the `write_date` from the record to the image url.
