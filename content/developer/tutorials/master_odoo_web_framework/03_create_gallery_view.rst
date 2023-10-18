@@ -476,7 +476,7 @@ template for it ?
          The template is an `Element` object so it can be manipulated like a HTML element.
 
    #. Register the template to Owl thanks to the `xml` function from :file:`@odoo/owl`.
-   #. Use the `useTooltip` hook from :file:`"@web/core/tooltip/tooltip_hook"` to display the
+   #. Use the `useTooltip` hook from :file:`@web/core/tooltip/tooltip_hook` to display the
       tooltips. This hooks take as argument the Owl template and the variable needed by the
       template.
 
