@@ -51,6 +51,25 @@ First step is to create a JavaScript implementation with a simple component.
    #. Implement a simple hello world component in `gallery_controller.js`.
    #. In `gallery_view.js`, import the controller, create a view object, and register it in the
       view registry under the name `gallery`.
+
+      .. example::
+         Here is an example on how to define a view object:
+
+         .. code-block:: js
+            
+            import { registry } from "@web/core/registry";
+            import { MyController } from "./my_controller";
+
+            export const myView = {
+                type: "my_view",
+                display_name: "MyView",
+                icon: "oi oi-view-list",
+                multiRecord: true,
+                Controller: MyController,
+            };
+
+            registry.category("views").add("my_controller", myView);
+
    #. Add `gallery` as one of the view type in the orders action.
    #. Make sure that you can see your hello world component when switching to the gallery view.
 
@@ -172,6 +191,9 @@ keeps the last task active.
    #. Instanciate a `KeepLast` object in the model.
    #. Add the `webSearchRead` call in the `KeepLast` so that only the last call is resolved.
 
+.. seealso::
+   `Example: usage of KeepLast <https://github.com/odoo/odoo/blob/ebf646b44f747567ff8788c884f7f18dffd453e0/addons/web/static/src/core/model_field_selector/model_field_selector_popover.js#L164>`_
+
 6. Reorganize code
 ==================
 
@@ -198,7 +220,7 @@ is hardcoded in the controller.
       and `GalleryRenderer`. Pass `Model` and `Renderer` as props to the controller.
    #. Remove the hardcoded import in the controller and get them from the props.
 
-.. example::
+.. note::
 
    This is how someone could now extend the gallery view by modifying the renderer:
 
@@ -223,7 +245,7 @@ is hardcoded in the controller.
          Renderer: MyExtendedGalleryRenderer,
       });
 
-1. Display images
+8. Display images
 =================
 
 .. exercise::
@@ -248,7 +270,7 @@ is hardcoded in the controller.
    .. image:: 03_create_gallery_view/tshirt_images.png
       :align: center
 
-7. Switch to form view on click
+9. Switch to form view on click
 ===============================
 
 .. exercise::
@@ -257,11 +279,9 @@ is hardcoded in the controller.
    `switchView` function from the action service.
 
 .. seealso::
-   `Code: The switchView function
-   <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
-   addons/web/static/src/webclient/actions/action_service.js#L1329>`_
+   `Code: The switchView function <https://github.com/odoo/odoo/blob/db2092d8d389fdd285f54e9b34a5a99cc9523d27/addons/web/static/src/webclient/actions/action_service.js#L1064>`_
 
-8. Add an optional tooltip
+9. Add an optional tooltip
 ==========================
 
 It is useful to have some additional information on mouse hover.
@@ -275,7 +295,8 @@ It is useful to have some additional information on mouse hover.
          <gallery image_field="some_field" tooltip_field="some_other_field"/>
 
    #. On mouse hover, display the content of the tooltip field. It should work if the field is a
-      char field, a number field or a many2one field.
+      char field, a number field or a many2one field. To put a tooltip to an html element, you can
+      put the string in the `data-tooltip` attribute of the element.
    #. Update the orders gallery view to add the customer as tooltip field.
 
    .. image:: 03_create_gallery_view/image_tooltip.png
@@ -283,7 +304,7 @@ It is useful to have some additional information on mouse hover.
       :scale: 60%
 
 .. seealso::
-   `Code: The tooltip hook <{GITHUB_PATH}/addons/web/static/src/core/tooltip/tooltip_hook.js>`_
+   `Example: usage of t-att-data-tooltip <https://github.com/odoo/odoo/blob/145fe958c212ddef9fab56a232c8b2d3db635c8e/addons/survey/static/src/views/widgets/survey_question_trigger/survey_question_trigger.xml#L8>`_
 
 9. Add pagination
 =================
@@ -291,7 +312,6 @@ It is useful to have some additional information on mouse hover.
 .. exercise::
 
    Let's add a pager on the control panel and manage all the pagination like in a normal Odoo view.
-   Note that it is surprisingly difficult.
 
    .. image:: 03_create_gallery_view/pagination.png
       :align: center
@@ -356,7 +376,7 @@ Let us add some validation! In Odoo, XML documents can be described with an RN f
           return False
 
 .. seealso::
-   `Example: The RNG file of the graph view <{GITHUB_PATH}/addons/base/rng/graph_view.rng>`_
+   `Example: The RNG file of the graph view <https://github.com/odoo/odoo/blob/70942e4cfb7a8993904b4d142e3b1749a40db806/odoo/addons/base/rng/graph_view.rng>`_
 
 11. Uploading an image
 ======================
@@ -371,3 +391,93 @@ Our gallery view does not allow users to upload images. Let us implement that.
    #. You maybe noticed that the image is uploaded but it is not re-rendered by the browser.
       This is because the image link did not change so the browser do not re-fetch them. Include
       the `write_date` from the record to the image url.
+
+.. seealso::
+
+   - `Example: usage of FileUploader <https://github.com/odoo/odoo/blob/7710c3331ebd22f8396870bd0731f8c1152d9c41/addons/mail/static/src/web/activity/activity.xml#L48-L52>`_
+   - `Odoo: webSave definition <https://github.com/odoo/odoo/blob/ebd538a1942c532bcf1c9deeab3c25efe23b6893/addons/web/static/src/core/orm_service.js#L312>`_
+
+12.  Advanced tooltip template
+=============================
+
+For now we can only specify a tooltip field. But what if we want to allow to write a specific
+template for it ?
+
+.. example::
+
+   This is an example of a gallery arch view that should work after this exercise.
+
+   .. code-block:: xml
+
+      <record id="contacts_gallery_view" model="ir.ui.view">
+         <field name="name">awesome_gallery.orders.gallery</field>
+         <field name="model">res.partner</field>
+         <field name="arch" type="xml">
+            <gallery image_field="image_1920" tooltip_field="name">
+               <field name="email"/> <!-- Specify to the model that email should be fetched -->
+               <field name="name"/>  <!-- Specify to the model that name should be fetched -->
+               <tooltip-template> <!-- Specify the owl template for the tooltip -->
+                  <p class="m-0">name: <field name="name"/></p> <!-- field is compiled into a t-esc-->
+                  <p class="m-0">e-mail: <field name="email"/></p>
+               </tooltip-template>
+            </gallery>
+         </field>
+      </record>
+
+.. exercise::
+
+   #. Replace the `res.partner` gallery arch view in :file:`awesome_gallery/views/views.xml` with
+      the arch in example above. Don't worry if it does not pass the rng validation.
+   #. Modify the gallery rng validator to accept the new arch structure.
+
+      .. tip::
+
+         You can use this rng snippet to validate the tooltip-template tag
+
+         .. code-block:: xml
+
+            <rng:define name="tooltip-template">
+               <rng:element name="tooltip-template">
+                     <rng:zeroOrMore>
+                        <rng:text/>
+                        <rng:ref name="any"/>
+                     </rng:zeroOrMore>
+               </rng:element>
+            </rng:define>
+
+            <rng:define name="any">
+               <rng:element>
+                     <rng:anyName/>
+                     <rng:zeroOrMore>
+                        <rng:choice>
+                           <rng:attribute>
+                                 <rng:anyName/>
+                           </rng:attribute>
+                           <rng:text/>
+                           <rng:ref name="any"/>
+                        </rng:choice>
+                     </rng:zeroOrMore>
+               </rng:element>
+            </rng:define>
+   #. The arch parser should parse the fields and the tooltip template. Import `visitXML` from
+      :file:`@web/core/utils/xml` and use it to parse field names and the tooltip template.
+   #. Make sure that the model call the `webSearchRead` by including the parsed field names in the
+      specification.
+   #. The renderer (or any sub-component you created for it) should receive the parsed tooltip
+      template. Manipulate this template to replace the `<field>` element into a `<t t-esc="x">`
+      element.
+
+      .. tip::
+
+         The template is an `Element` object so it can be manipulated like a HTML element.
+
+   #. Register the template to Owl thanks to the `xml` function from :file:`@odoo/owl`.
+   #. Use the `useTooltip` hook from :file:`"@web/core/tooltip/tooltip_hook"` to display the
+      tooltips. This hooks take as argument the Owl template and the variable needed by the
+      template.
+
+.. seealso::
+
+   - `Example: useTooltip used in Kaban <https://github.com/odoo/odoo/blob/0e6481f359e2e4dd4f5b5147a1754bb3cca57311/addons/web/static/src/views/kanban/kanban_record.js#L189-L192>`_
+   - `Example: visitXML usage <https://github.com/odoo/odoo/blob/48ef812a635f70571b395f82ffdb2969ce99da9e/addons/web/static/src/views/list/list_arch_parser.js#L19>`_
+   - `Owl: Inline templates with xml helper function <https://github.com/odoo/owl/blob/master/doc/reference/templates.md#inline-templates>`_
