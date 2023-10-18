@@ -281,8 +281,8 @@ is hardcoded in the controller.
 .. seealso::
    `Code: The switchView function <https://github.com/odoo/odoo/blob/db2092d8d389fdd285f54e9b34a5a99cc9523d27/addons/web/static/src/webclient/actions/action_service.js#L1064>`_
 
-9. Add an optional tooltip
-==========================
+10. Add an optional tooltip
+===========================
 
 It is useful to have some additional information on mouse hover.
 
@@ -301,13 +301,13 @@ It is useful to have some additional information on mouse hover.
 
    .. image:: 03_create_gallery_view/image_tooltip.png
       :align: center
-      :scale: 60%
+      :scale: 50%
 
 .. seealso::
    `Example: usage of t-att-data-tooltip <https://github.com/odoo/odoo/blob/145fe958c212ddef9fab56a232c8b2d3db635c8e/addons/survey/static/src/views/widgets/survey_question_trigger/survey_question_trigger.xml#L8>`_
 
-9. Add pagination
-=================
+11. Add pagination
+==================
 
 .. exercise::
 
@@ -319,7 +319,7 @@ It is useful to have some additional information on mouse hover.
 .. seealso::
    `Code: The usePager hook <{GITHUB_PATH}/addons/web/static/src/search/pager_hook.js>`_
 
-10.  Validating views
+12.  Validating views
 =====================
 
 We have a nice and useful view so far. But in real life, we may have issue with users incorrectly
@@ -378,7 +378,7 @@ Let us add some validation! In Odoo, XML documents can be described with an RN f
 .. seealso::
    `Example: The RNG file of the graph view <https://github.com/odoo/odoo/blob/70942e4cfb7a8993904b4d142e3b1749a40db806/odoo/addons/base/rng/graph_view.rng>`_
 
-11. Uploading an image
+13. Uploading an image
 ======================
 
 Our gallery view does not allow users to upload images. Let us implement that.
@@ -392,12 +392,16 @@ Our gallery view does not allow users to upload images. Let us implement that.
       This is because the image link did not change so the browser do not re-fetch them. Include
       the `write_date` from the record to the image url.
 
+   .. image:: 03_create_gallery_view/upload_image.png
+      :align: center
+      :scale: 50%
+
 .. seealso::
 
    - `Example: usage of FileUploader <https://github.com/odoo/odoo/blob/7710c3331ebd22f8396870bd0731f8c1152d9c41/addons/mail/static/src/web/activity/activity.xml#L48-L52>`_
    - `Odoo: webSave definition <https://github.com/odoo/odoo/blob/ebd538a1942c532bcf1c9deeab3c25efe23b6893/addons/web/static/src/core/orm_service.js#L312>`_
 
-12.  Advanced tooltip template
+14. Advanced tooltip template
 =============================
 
 For now we can only specify a tooltip field. But what if we want to allow to write a specific
@@ -475,6 +479,10 @@ template for it ?
    #. Use the `useTooltip` hook from :file:`"@web/core/tooltip/tooltip_hook"` to display the
       tooltips. This hooks take as argument the Owl template and the variable needed by the
       template.
+
+   .. image:: 03_create_gallery_view/advanced_tooltip.png
+      :align: center
+      :scale: 50%
 
 .. seealso::
 
