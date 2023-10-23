@@ -4,20 +4,15 @@ Chapter 4: Customize a kanban view
 
 .. todo:: It'd be cool to follow the naming convention of the previous chapters: "Chapter N: The concept studied in the chapter"
 
-.. warning::
-   It is highly recommended that you complete :doc:`02_create_customize_fields` before starting this
-   chapter. The concepts introduced in Chapter 3, including views and examples, will be essential
-   for understanding the material covered in this chapter.
-
 We have gained an understanding of the numerous capabilities offered by the Odoo web framework. As a
 next step, we will customize a kanban view. This is a more complicated project that will showcase
 some non trivial aspects of the framework. The goal is to practice composing views, coordinating
 various aspects of the UI, and doing it in a maintainable way.
 
 Bafien had the greatest idea ever: a mix of a kanban view and a list view would be perfect for your
-needs! In a nutshell, he wants a list of customers on the left of the task's kanban view. When you
+needs! In a nutshell, he wants a list of customers on the left of the CRM kanban view. When you
 click on a customer on the left sidebar, the kanban view on the right is filtered to only display
-orders linked to that customer.
+leads linked to that customer.
 
 .. admonition:: Goal
 
@@ -34,14 +29,22 @@ orders linked to that customer.
 ===========================
 
 Since we are customizing the kanban view, let us start by extending it and using our extension in
-the kanban view for the tshirt orders.
+the kanban view of CRM.
 
 .. exercise::
 
-   #. Extend the kanban view by extending the kanban controller and by creating a new view object.
-   #. Register it in the views registry under `awesome_tshirt.customer_kanban`.
-   #. Update the kanban arch to use the extended view. This can be done with the `js_class`
-      attribute.
+   #. Create a new empty component that extends the `KanbanController` component from
+      :file:`@web/views/kanban/kanban_controller`.
+   #. Create a new view object and assign all keys and values from `kanbanView` from
+      :file:`@web/views/kanban/kanban_view`. Override the Controller key by putting your newly
+      created controller.
+   #. Register it in the views registry under `awesome_kanban`.
+   #. Update the crm kanban arch in :file:`awesome_kanban/views/views.xml` to use the extended view.
+      This can be done by specifying the `js_class` attribute in the kanban node.
+
+.. seealso::
+
+   `Example: Create a new view by extending a pre-existing one <https://github.com/odoo/odoo/blob/0a59f37e7dd73daff2e9926542312195b3de4154/addons/todo/static/src/views/todo_conversion_form/todo_conversion_form_view.js>`_
 
 2. Create a CustomerList component
 ==================================
