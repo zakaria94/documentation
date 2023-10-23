@@ -12,8 +12,7 @@ difficult to do, but there are no really good resources on how to do it. Note th
 should be solved by either customizing an existing view, or with a client action.
 
 For this exercise, let's assume that we want to create a `gallery` view, which is a view that lets
-us represent a set of records with an image field. In our Awesome Tshirt scenario, we would like to
-be able to see a set of t-shirts images.
+us represent a set of records with an image field.
 
 The problem could certainly be solved with a kanban view, but this means that it is not possible to
 have our normal kanban view and the gallery view in the same action.
