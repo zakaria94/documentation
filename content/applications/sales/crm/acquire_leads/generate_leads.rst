@@ -1,10 +1,23 @@
-============================
-Generate leads/opportunities
-============================
+===============================
+Capture leads and opportunities
+===============================
 
-Two key ways to generate new leads or opportunities for your business are through email aliases and
-website contact forms. Odoo automatically creates leads in your CRM whenever someone sends a
-message to a Sales Team email alias or fills out a contact form on your website.
+There are multiple ways to capture new leads or opportunities in the *CRM* pipeline.
+
+Odoo automatically creates leads in your CRM whenever someone sends a message to a Sales Team email
+alias or fills out a contact form on your website.
+
+Activate leads setting
+======================
+
+To activate the *Leads* setting, navigate to :menuselection:`CRM app --> Configuration --> Settings`
+and check the box labeled, :guilabel:`Leads`. Then, click :guilabel:`Save`.
+
+.. note::
+   Once the *Leads* setting has been activated, it applies to all sales teams by default. To turn
+   off leads for a specific team, navigate to :menuselection:`CRM app --> Configuration --> Sales
+   Teams`. Then, select a team from the list to open the record, and uncheck the :guilabel:`Leads`
+   box. Once done, click :guilabel:`Save`.
 
 Configure email aliases
 =======================
@@ -28,13 +41,6 @@ someone submits this form, a lead or an opportunity is generated in your databas
 .. image:: generate_leads/default-contact-us-page.png
    :align: center
    :alt: Default Contact Us page
-
-The Contact Form can be activated or deactivated at any time by going to :menuselection:`Website
---> Go to Website --> Customize --> Contact Form`.
-
-.. image:: generate_leads/contact-form-toggle.png
-   :align: center
-   :alt: Contact Form toggle
 
 When the Form is deactivated, the *Contact Us* page simply displays a button to email your company
 directly. Any email sent this way will generate a lead/opportunity.
