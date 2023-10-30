@@ -55,15 +55,29 @@ We will need to display a list of customers, so we might as well create the comp
 
    #. Create a `CustomerList` component which only displays a `div` with some text for now.
    #. It should have a `selectCustomer` prop.
-   #. Create a new template extending (XPath) the kanban controller template to add the
-      `CustomerList` next to the kanban renderer. Give it an empty function as `selectCustomer` for
-      now.
+   #. Create a new template extending (XPath) the kanban controller template `web.KanbanView` to add
+      the `CustomerList` next to the kanban renderer. Give it an empty function as `selectCustomer`
+      for now.
+
+      .. tip::
+
+         You can use this xpath inside the template to add a div before the renderer component.
+
+         .. code-block:: xml
+
+               <xpath expr="//t[@t-component='props.Renderer']" position="before">
+                  ...
+               </xpath>
+
    #. Subclass the kanban controller to add `CustomerList` in its sub-components.
    #. Make sure you see your component in the kanban view.
 
-   .. image:: 04_customize_kanban_view/customer_list.png
+   .. image:: 04_customize_kanban_view/customer_list_component.png
       :align: center
-      :scale: 60%
+
+   .. seealso::
+
+      :ref:`Template inheritance <reference/qweb/template_inheritance>`
 
 3. Load and display data
 ========================
@@ -76,7 +90,10 @@ We will need to display a list of customers, so we might as well create the comp
 
    .. image:: 04_customize_kanban_view/customer_data.png
       :align: center
-      :scale: 60%
+
+.. seealso::
+
+   - `Example: fetching records from a model <https://github.com/odoo/odoo/blob/986c00c1bd1b3ca16a04ab25f5a2504108136112/addons/project/static/src/views/burndown_chart/burndown_chart_model.js#L26-L31>`_
 
 4. Update the main kanban view
 ==============================
@@ -84,36 +101,55 @@ We will need to display a list of customers, so we might as well create the comp
 .. exercise::
 
    #. Implement `selectCustomer` in the kanban controller to add the proper domain.
+
+      .. tip::
+
+         Since it is not trivial to interact with the search view, here is a snippet to create a
+         filter:
+
+         .. code-block:: js
+
+            this.env.searchModel.createNewFilters([{
+                description: partner_name,
+                domain: [["partner_id", "=", partner_id]],
+                _key: "customer", // this is a custom key to retrieve our filters later
+            }])
+
+   #. By clicking on multiple customers, you can see that the old customer filter is not replaced.
+      Make sure that by clicking on a customer, the old filter is replaced by the new one.
+
+      .. tip::
+
+         You can use this snippet to get the customers filters and toggle them.
+
+         .. code-block:: js
+
+            const customerFilters = this.env.searchModel.getSearchItems((searchItem) =>
+                  searchItem._key === "customer"
+            );
+
+            for (const customerFilter of customerFilters) {
+               if (customerFilter.isActive) {
+                   this.env.searchModel.toggleSearchItem(customerFilter.id);
+               }
+            }
+
    #. Modify the template to give the real function to the `CustomerList` `selectCustomer` prop.
-
-   Since it is not trivial to interact with the search view, here is a quick snippet to help:
-
-   .. code-block:: js
-
-      selectCustomer(customer_id, customer_name) {
-         this.env.searchModel.setDomainParts({
-            customer: {
-                  domain: [["customer_id", "=", customer_id]],
-                  facetLabel: customer_name,
-            },
-         });
-      }
 
    .. image:: 04_customize_kanban_view/customer_filter.png
       :align: center
-      :scale: 60%
 
 5. Only display customers which have an active order
 ====================================================
 
-There is a `has_active_order` field on `res.partner`. Let us allow the user to filter results on
-customers with an active order.
+There is a `opportunity_ids` field on `res.partner`. Let us allow the user to filter results on
+customers with at least one opportunity.
 
 .. exercise::
 
    #. Add an input of type checkbox in the `CustomerList` component, with a label "Active customers"
       next to it.
-   #. Changing the value of the checkbox should filter the list on customers with an active order.
+   #. Changing the value of the checkbox should filter the list of customers.
 
    .. image:: 04_customize_kanban_view/active_customer.png
       :align: center
@@ -128,7 +164,8 @@ customers with an active order.
    displayed customers, according to their name.
 
    .. tip::
-      You can use the `fuzzyLookup` function to perform the filter.
+      You can use the `fuzzyLookup` from :file:`@web/core/utils/search` function to perform the
+      filter.
 
    .. image:: 04_customize_kanban_view/customer_search.png
       :align: center
@@ -136,7 +173,7 @@ customers with an active order.
 
 .. seealso::
 
-   - `Code: The fuzzylookup function <{GITHUB_PATH}/addons/web/static/src/core/utils/search.js>`_
+   - `Code: The fuzzylookup function <https://github.com/odoo/odoo/blob/235fc69280a18a5805d8eb84d76ada91ba49fe67/addons/web/static/src/core/utils/search.js#L41-L54>`_
    - `Example: Using fuzzyLookup
      <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
      addons/web/static/tests/core/utils/search_test.js#L17>`_
