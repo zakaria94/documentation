@@ -112,7 +112,7 @@ We will need to display a list of customers, so we might as well create the comp
             this.env.searchModel.createNewFilters([{
                 description: partner_name,
                 domain: [["partner_id", "=", partner_id]],
-                _key: "customer", // this is a custom key to retrieve our filters later
+                isFromAwesomeKanban: true, // this is a custom key to retrieve our filters later
             }])
 
    #. By clicking on multiple customers, you can see that the old customer filter is not replaced.
@@ -125,7 +125,7 @@ We will need to display a list of customers, so we might as well create the comp
          .. code-block:: js
 
             const customerFilters = this.env.searchModel.getSearchItems((searchItem) =>
-                  searchItem._key === "customer"
+                  searchItem.isFromAwesomeKanban
             );
 
             for (const customerFilter of customerFilters) {
@@ -135,6 +135,13 @@ We will need to display a list of customers, so we might as well create the comp
             }
 
    #. Modify the template to give the real function to the `CustomerList` `selectCustomer` prop.
+
+   .. note::
+
+      You can use `Symbol
+      <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol>`_
+      to make sure that the custom `isFromAwesomeKanban` key will not collide with keys any other
+      code might add to the object.
 
    .. image:: 04_customize_kanban_view/customer_filter.png
       :align: center
