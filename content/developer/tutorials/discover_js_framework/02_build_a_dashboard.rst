@@ -442,14 +442,12 @@ The dashboard configuration will be saved as a list of removed item ids.
 
 Here is a list of some small improvements you could try to do if you have the time:
 
-.. exercise::
-
-   #. Make sure your application can be :ref:`translated <reference/translations>` (with
-      `env._t`).
-   #. Clicking on a section of the pie chart should open a list view of all orders which have the
-      corresponding size.
-   #. Save the content of the dashboard in a user settings on the server!
-   #. Make it responsive: in mobile mode, each card should take 100% of the width
+#. Make sure your application can be :ref:`translated <reference/translations>` (with
+   `env._t`).
+#. Clicking on a section of the pie chart should open a list view of all orders which have the
+   corresponding size.
+#. Save the content of the dashboard in a user settings on the server!
+#. Make it responsive: in mobile mode, each card should take 100% of the width
 
 .. seealso::
    - `Example: use of env._t function

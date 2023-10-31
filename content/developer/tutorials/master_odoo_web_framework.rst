@@ -55,6 +55,5 @@ Content
 =======
 
 - :doc:`master_odoo_web_framework/01_build_clicker_game`
-- :doc:`master_odoo_web_framework/02_create_customize_fields`
-- :doc:`master_odoo_web_framework/03_create_gallery_view`
-- :doc:`master_odoo_web_framework/04_customize_kanban_view`
+- :doc:`master_odoo_web_framework/02_create_gallery_view`
+- :doc:`master_odoo_web_framework/03_customize_kanban_view`
