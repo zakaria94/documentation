@@ -1,28 +1,29 @@
 =========================
-Amazon Connector Features
+Amazon Connector features
 =========================
 
-The **Amazon Connector** synchronizes the orders between Amazon and your Odoo database, which
-reduces considerably the amount of time spent on your Amazon Seller Central dashboard, making your
-daily routine a lot easier.
+The *Amazon Connector* synchronizes orders between Amazon and Odoo, which considerably reduces the
+amount of time spent on the Amazon Seller Central dashboard.
 
-Supported Features
+Supported features
 ==================
 
-The connector is able to:
+The *Amazon Connector* is able to:
 
-- Synchronize (Amazon to Odoo) all confirmed orders (both FBA and FBM) and their order items which
+- Synchronize (Amazon to Odoo) all confirmed orders (both FBA and FBM), and their order items, which
   include:
 
-  - the product’s name, description and quantity
-  - the shipping costs for the product
-  - the gift wrapping charges
+  - product name, description, and quantity
+  - shipping costs for the product
+  - gift wrapping charges
 
-- Create on Odoo any missing partner related to an order (contact types supported: contact and
+- Create any missing partner related to an order in Odoo (contact types supported: contact and
   delivery).
-- Notify Amazon of a shipping confirmed on Odoo (FBM) in order to get paid.
+
+- Notify Amazon of confirmed shipping in Odoo (FBM) to get paid.
 
 - Support multiple seller accounts.
+
 - Support multiple marketplaces per seller account.
 
 +----------------------+----------------------------+-------------------------------------+
@@ -34,7 +35,7 @@ The connector is able to:
 | **Shipping**         | - Charges                  | - Charges                           |
 |                      |                            | - Delivery created                  |
 +----------------------+----------------------------+-------------------------------------+
-| **Gift Wrapping**    | Handled by Amazon          | - Gift wrapping charges             |
+| **Gift Wrapping**    | - Handled by Amazon        | - Gift wrapping charges             |
 |                      |                            | - Gift message                      |
 +----------------------+----------------------------+-------------------------------------+
 | **Stock Management** | One stock move created     | Handled by the delivery             |
@@ -45,19 +46,19 @@ The connector is able to:
 +----------------------+----------------------------+-------------------------------------+
 
 .. note::
-   The connector is designed to synchronize orders' data as detailed above. Other actions, such as
-   downloading monthly fees reports, handling disputes, or issuing refunds must be managed from
-   Amazon Seller Central, as usual.
+   The connector is designed to synchronize the data of sales orders, as detailed above. Other
+   actions, such as downloading monthly fees reports, handling disputes, or issuing refunds,
+   **must** be managed from the *Amazon Seller Central*, as usual.
 
 .. _amazon/supported-marketplaces:
 
-Supported Marketplaces
+Supported marketplaces
 ======================
 
-The Amazon Connector supports all the current marketplaces.
-If a marketplace is not listed in your Amazon marketplaces, you can :ref:`add a new marketplace
-<amazon/add-new-marketplace>`.
+The *Amazon Connector* supports all the current marketplaces.
 
+If a marketplace is not listed in your Amazon marketplaces, it's possible to :ref:`add a new
+marketplace <amazon/add-new-marketplace>`.
 
 .. seealso::
    - :doc:`setup`
