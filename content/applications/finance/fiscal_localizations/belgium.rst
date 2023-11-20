@@ -242,6 +242,199 @@ journal.
 
 .. _belgium/einvoicing:
 
+Codabox
+-------
+
+**Codabox** is a service that allows Belgian accounting firms accessing their clients' bank
+information and statements. Odoo provides a way to import such statements automatically.
+
+.. note::
+   As an accounting firm, you must manage your clients on separate databases and configure them
+   individually to avoid mixing up their data.
+
+Configuration
+~~~~~~~~~~~~~
+
+The configuration must be done on each client database. In the following
+instructions, we will refer to your client's company as *Company* and to your
+accounting firm as *Accounting Firm*.
+
+You must first :ref:`Install <general/install>` the :guilabel:`Codabox` to start.
+If the :guilabel:`CODA` and :guilabel:`SODA` modules are already installed,
+the :guilabel:`Codabox` one is automatically installed.
+
+Configure the Company settings
+******************************
+
+#. Go to :menuselection:`Configuration --> Settings --> General Settings --> Companies`
+#. The country of the company must be set to Belgium
+#. The VAT number of the company must be added
+#. It is advised to set the Accounting Firm (the fiduciary) and its VAT number
+
+Configure the Journals
+**********************
+
+.. tabs::
+
+   .. tab:: For CODA files
+
+      #. Create a new bank journal
+      #. Set the right IBAN in the :guilabel:`Account Number`
+      #. Select :guilabel:`Codabox synchronisation` as the :guilabel:`Bank Feed`
+
+      .. image:: belgium/configuration_coda_journal.png
+         :align: center
+         :alt: Configuration of a CODA journal.
+
+   .. tab:: For SODA files
+
+      #. Create a new miscellaneous journal
+      #. Go to :menuselection:`Accounting --> Configuration --> Accounting: Codabox`
+      #. Select the journal you just created in the SODA journal field.
+
+      .. image:: belgium/configuration_soda_setting.png
+         :align: center
+         :alt: Configuration of a SODA journal.
+
+.. _belgium/codabox-configuration-connection:
+
+Configure the Connection
+************************
+
+To configure the connection, go to
+:menuselection:`Accounting --> Configuration --> Accounting: Codabox`
+where the :guilabel:`Fiduciary VAT` should be
+automatically filled in if the Accounting Firm was previously set up.
+If not, it can be done manually.
+
+The procedure differs depending on whether **Codabox** is
+being setup for a first client or an additional one.
+
+.. tabs::
+
+   .. tab:: First connection
+
+       #. The :guilabel:`Access Token` should be left empty.
+       #. Click on :guilabel:`Connect`, where you are redirected to
+          the **Codabox** platform, here validate the connection.
+       #. Once redirected to Odoo, the :guilabel:`Access Token` should now be filled, and
+          the :guilabel:`Status` should be set to :guilabel:`Connected`.
+
+       .. image:: belgium/configuration_connection_ok.png
+          :align: center
+          :alt: Configuration of the connection.
+
+       .. important::
+          The :guilabel:`Access Token` should **not be modified**.
+
+   .. tab:: Following connection
+
+       #. Copy the :guilabel:`Access Token` from a previous connection
+       #. Click on :guilabel:`Connect`.
+       #. The **Codabox** connection linked to the :guilabel:`Access Token`
+          should still exist, therefore there is no need to validate the connection again
+       #. A new and different :guilabel:`Access Token` will be generated, and the
+          :guilabel:`Status` should be set to :guilabel:`Connected`.
+
+       .. note::
+          By having a different :guilabel:`Access Token` for each client, you can
+          easily revoke the access of a client to your Codabox account without
+          affecting the other clients. One client cannot interfere with another.
+
+Synchronisation
+~~~~~~~~~~~~~~~
+
+Once the connection is established, Odoo can be synchronized with Codabox.
+
+.. tabs::
+
+   .. tab:: For CODA files
+
+      CODA files are automatically imported from Codabox every 12 hours. You do
+      not have to do anything. However, if you wish, it can also be done manually,
+      by clicking on the :guilabel:`Fetch CODA's` button in the Accounting Dashboard.
+
+      .. image:: belgium/dashboard_coda.png
+         :align: center
+         :alt: Manually fetch CODA's.
+
+   .. tab:: For SODA files
+
+      Click on the :guilabel:`Fetch SODA's` button, in the Accounting
+      Dashboard, to retrieve the latest payroll statements from Codabox (usually
+      once a month).
+
+      .. image:: belgium/dashboard_soda.png
+         :align: center
+         :alt: Manually fetch SODA's.
+
+
+.. note::
+    The connection between Odoo and Codabox can be revoked by using the
+    :guilabel:`Revoke` button in the Codabox settings, which will revoke
+    the link on Odoo's side only.
+
+    If you have multiple connections, you will still be able to use the
+    Access Token of one of them to easily reconnect Odoo and Codabox for
+    another client.
+
+    However, if you have only one (remaining) connection, you will not be able
+    to use its Access Token to create new connections. In that case, you will
+    have to revoke the connection from the Codabox platform too,
+    and then recreate a new one following the steps in the
+    :ref:`first connection <belgium/codabox-configuration-connection>` section.
+
+Potential issues
+~~~~~~~~~~~~~~~~
+
+Codabox is not configured. Please check your configuration.
+  Either the Company VAT of the Accounting Firm VAT is not set.
+
+It seems that the fiduciary VAT number you provided is not valid. Please check your configuration.
+  Either the Company VAT of the Accounting Firm VAT is in the wrong format.
+
+It seems that the fiduciary VAT number you provided does not exist in Codabox. Please check your configuration.
+  The Accounting Firm VAT number you provided is not registered in Codabox.
+
+Error while connecting to the IAP server. Please contact Odoo support.
+  It seems that Odoo's IAP server is down or unreachable. Please contact
+  Odoo support.
+
+It seems that your Codabox connection is not valid anymore. Please check your configuration.
+  It seems that you have either revoked the access of Odoo to your Codabox account, or that
+  you have not completed the configuration process. In this case, you must click on the
+  :guilabel:`Revoke connection` button in the settings, and follow again the steps in
+  the :ref:`first connection <belgium/codabox-configuration-connection>` section.
+
+It seems that you have already registered this fiduciary. You must reuse the same access token to connect to Codabox.
+  It seems that you have already your Accounting Firm with Odoo, but that the Access Token
+  is either not filled or wrong. You should follow the steps in the
+  :ref:`following connection <belgium/codabox-configuration-connection>` tab section.
+
+  In case you have lost your Access Token, you will have to go on the Codabox platform,
+  and revoke the access of Odoo to your Codabox account. Then, you will have to follow
+  the steps in the :ref:`first connection <belgium/codabox-configuration-connection>` section.
+
+The provided access token is not valid for this fiduciary. Please check your configuration. If you have lost your access token, please contact Odoo support.
+  Same as above.
+
+It seems that no connection linked to your database/VAT number exists. Please check your configuration.
+  You may obtain this error when revoking or trying to fetch files from Codabox if
+  the pair (Accounting Firm VAT, Company VAT) is not registered yet. This may happen if
+  you have changed the company VAT after the connection was established for instance.
+  For security reasons, you will have to recreate a connection for this company VAT by following the
+  steps in the :ref:`first connection <belgium/codabox-configuration-connection>` section.
+
+No files were found. Please check your configuration.
+  This may occur if the company VAT has changed after the connection was established.
+  In that case, you must click on the :guilabel:`Revoke connection` button in the settings,
+  and recreate the connection.
+
+It seems you have already created a connection to Codabox with this fiduciary. To create a new connection, you must first revoke the old one on myCodabox portal.
+  You must go on the Codabox platform, and revoke the access of Odoo to your Codabox account.
+  Then, you will have to follow the steps in the
+  :ref:`first connection <belgium/codabox-configuration-connection>` section.
+
 Electronic invoicing
 ====================
 
